@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>David Jacob · IT Consulting</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      color: #f8fafc;
+      background: #040404;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #050505; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    header { position: sticky; top: 0; z-index: 50; background: rgba(8,8,10,0.94); border-bottom: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(18px); }
+    .container { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; }
+    .nav { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: flex-end; font-size: 0.95rem; color: #cbd5e1; }
+    .nav a:hover { color: #ffffff; }
+    .brand { display: flex; flex-direction: column; gap: 0.15rem; }
+    .brand .label { text-transform: uppercase; letter-spacing: 0.35em; font-size: 0.75rem; color: #94a3b8; }
+    .brand .title { font-size: 1rem; font-weight: 700; }
+    .hero { min-height: 100vh; position: relative; overflow: hidden; }
+    .hero:before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.82)); }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center; opacity: 0.55; }
+    .hero-content { position: relative; z-index: 1; padding: 6rem 0 5rem; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 2.5rem; align-items: center; }
+    .hero-copy { max-width: 680px; }
+    .eyebrow { display: inline-flex; text-transform: uppercase; letter-spacing: 0.35em; color: #38bdf8; font-size: 0.8rem; font-weight: 700; }
+    .headline { margin: 1.2rem 0 1.5rem; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: -0.04em; font-weight: 800; }
+    .hero-copy p { max-width: 40rem; color: #cbd5e1; font-size: 1.05rem; line-height: 1.75; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; }
+    .button, .button-alt { display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; padding: 0.95rem 1.7rem; font-weight: 700; transition: transform 0.2s ease, background 0.2s ease; }
+    .button { background: #22d3ee; color: #000; }
+    .button:hover { transform: translateY(-1px); background: #38bdf8; }
+    .button-alt { border: 1px solid rgba(255,255,255,0.18); color: #f8fafc; background: rgba(255,255,255,0.05); }
+    .button-alt:hover { background: rgba(255,255,255,0.12); }
+    .hero-panel { border-radius: 2rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.75); padding: 2rem; box-shadow: 0 30px 80px rgba(15, 23, 42, 0.45); }
+    .hero-panel h2 { margin: 0 0 1rem; font-size: 1.2rem; }
+    .hero-panel p { margin: 0.85rem 0 0; line-height: 1.75; color: #cbd5e1; }
+    section { padding: 5rem 0; }
+    .section-head { text-align: center; margin-bottom: 2rem; }
+    .section-head .eyebrow { color: #38bdf8; margin-bottom: 0.9rem; }
+    .section-head h2 { margin: 0; font-size: clamp(2.25rem, 4vw, 3.5rem); line-height: 1.05; }
+    .section-head p { margin: 1rem auto 0; max-width: 44rem; color: #cbd5e1; line-height: 1.8; }
+    .grid-3, .grid-4 { display: grid; gap: 1.5rem; }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card { border-radius: 1.75rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.8); padding: 2rem; transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease; }
+    .card:hover { transform: translateY(-5px); border-color: rgba(56,189,248,0.45); background: rgba(15,23,42,0.95); }
+    .card h3 { margin: 0 0 1rem; font-size: 1.2rem; }
+    .card p { margin: 0; color: #cbd5e1; line-height: 1.75; }
+    #rechtliches .card h3 { margin: 0 0 0.35rem; }
+    #rechtliches .card p { margin: 0 0 1.15rem; }
+    #rechtliches .card p:last-child { margin-bottom: 0; }
+    .gallery-grid { display: grid; gap: 1rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .gallery-item { position: relative; border-radius: 1.75rem; overflow: hidden; min-height: 16rem; background-size: cover; background-position: top center; }
+    .gallery-item::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.48)); }
+    .gallery-item span { position: absolute; left: 1rem; bottom: 1rem; z-index: 1; font-size: 0.92rem; font-weight: 700; color: #f8fafc; }
+    .contact-grid { display: grid; gap: 2rem; grid-template-columns: 1.1fr 0.9fr; }
+    .contact-box { border-radius: 2rem; border: 1px solid rgba(255,255,255,0.1); background: rgba(15,23,42,0.8); padding: 2rem; }
+    .contact-box h3 { margin-top: 0; font-size: 1.4rem; }
+    .contact-box p, .contact-box dt, .contact-box dd { line-height: 1.8; }
+    .contact-list { display: grid; gap: 1.25rem; }
+    .contact-item dt { text-transform: uppercase; letter-spacing: 0.2em; color: #94a3b8; font-size: 0.75rem; }
+    .contact-item dd { margin: 0.35rem 0 0; font-size: 1.05rem; font-weight: 700; color: #f8fafc; }
+    .secondary-card { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); }
+    .secondary-card p { margin: 0.8rem 0 0; color: #cbd5e1; }
+    .footer { border-top: 1px solid rgba(255,255,255,0.08); color: #94a3b8; padding: 2rem 0; }
+    .footer-links { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 1rem; }
+    .footer-links a:hover { color: #ffffff; }
+    @media (max-width: 960px) {
+      .hero-content, .contact-grid { grid-template-columns: 1fr; }
+      .grid-3, .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .nav { justify-content: center; }
+      .hero { padding-top: 1rem; }
+      .hero-copy .headline { font-size: 2.75rem; }
+      .grid-3, .grid-4 { grid-template-columns: 1fr; }
+    }
+    .cookie-toggle {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 120;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.95rem 1.2rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #f8fafc;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(16px);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .cookie-toggle:hover {
+      transform: translateY(-1px);
+      background: rgba(20, 27, 45, 0.96);
+    }
+    .cookie-banner {
+      position: fixed;
+      inset: auto 1rem 1rem;
+      z-index: 120;
+      display: none;
+      flex-direction: column;
+      padding: 1.25rem 1.4rem;
+      width: min(98vw, 42rem);
+      border-radius: 1.5rem;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+      gap: 1rem;
+    }
+    .cookie-banner.open {
+      display: flex;
+    }
+    .cookie-banner p {
+      margin: 0;
+      color: #e2e8f0;
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+    .cookie-banner a {
+      color: #38bdf8;
+      text-decoration: underline;
+    }
+    .cookie-banner button {
+      border: none;
+      background: #22d3ee;
+      color: #000;
+      padding: 0.85rem 1.4rem;
+      border-radius: 999px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .cookie-banner button:hover,
+    .cookie-toggle:hover {
+      transform: translateY(-1px);
+      background: #38bdf8;
+    }
+    .cookie-banner-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      width: 100%;
+    }
+    .cookie-close {
+      width: 2rem;
+      height: 2rem;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      color: #f8fafc;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    @media (max-width: 680px) {
+      .cookie-banner { width: min(98vw, 100%); }
+      .cookie-banner-header { flex-direction: column; align-items: stretch; }
+      .cookie-toggle { right: 0.75rem; bottom: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;padding:1rem 0;">
+      <div class="brand">
+        <span class="label">David Jacob</span>
+        <span class="title">IT Consulting · Systemmanagement</span>
+      </div>
+      <nav class="nav">
+        <a href="#start">Start</a>
+        <a href="#ueberuns">Über uns</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#leistungen">Leistungen</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="start" class="hero">
+      <img src="Bilder/pexels-sejio402-6477206.jpg" alt="IT Arbeitsumgebung" />
+      <div class="container hero-content">
+        <div class="hero-copy">
+          <span class="eyebrow">IT-Consulting · digitale Unabhängigkeit</span>
+          <h1 class="headline">Höchste Zeit für digitale Unabhängigkeit.</h1>
+          <p>Ich helfe Unternehmen, ihre IT sicher, flexibel und selbstbestimmt zu gestalten – damit Ihre Organisation souverän arbeiten kann.</p>
+          <div class="hero-actions">
+            <a href="#kontakt" class="button">Jetzt anfragen</a>
+            <a href="#leistungen" class="button-alt">Leistungen ansehen</a>
+          </div>
+        </div>
+        <div class="hero-panel">
+          <h2>Mein Fokus</h2>
+          <p><strong>IT-Souveränität:</strong> klare Verantwortlichkeiten, weniger Abhängigkeiten.</p>
+          <p><strong>Sicherheits-Setup:</strong> Schutz für Daten, Systeme und Betrieb.</p>
+          <p><strong>Praxisnähe:</strong> digitale Lösungen, die im Alltag funktionieren.</p>
+          <p><strong>Transparenz:</strong> immer nachvollziehbar, immer verständlich.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="ueberuns">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Über uns</span>
+          <h2>Mein Anspruch</h2>
+          <p>Digitale Souveränität beginnt mit einem klaren Blick auf Technik, Prozesse und Menschen. Ich entwickle IT-Strategien, die Sicherheit und Produktivität dauerhaft verbinden.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Vertrauen schaffen</h3>
+            <p>Klare Kommunikation, nachvollziehbare Entscheidungen und ein partnerschaftlicher Ansatz sorgen für Vertrauen im Projekt.</p>
+          </div>
+          <div class="card">
+            <h3>Stabilität sichern</h3>
+            <p>Technische Infrastruktur, Datenschutz und Backup werden so aufgebaut, dass Ihr Betrieb dauerhaft belastbar bleibt.</p>
+          </div>
+          <div class="card">
+            <h3>Zukunftsfähigkeit planen</h3>
+            <p>IT-Lösungen werden so gestaltet, dass sie mit Ihrem Unternehmen wachsen und sich flexibel weiterentwickeln lassen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="galerie" style="background: #060612;">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Galerie</span>
+          <h2>Visuelle Eindrücke</h2>
+          <p>Ein visueller Eindruck von moderner IT-Arbeit, klaren Arbeitsplätzen und digitaler Laptop-Umgebung.</p>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item" style="background-image:url('Bilder/pexels-rohan001-7246556.jpg');"><span>IT Galerie 1</span></div>
+          <div class="gallery-item" style="background-image:url('Bilder/B7659E77-C078-421E-9AC7-324B39A30F2A_1_105_c.jpeg');"><span>IT Galerie 2</span></div>
+          <div class="gallery-item" style="background-image:url('Bilder/pexels-jakubzerdzicki-19825057.jpg');"><span>IT Galerie 3</span></div>
+          <div class="gallery-item" style="background-image:url('Bilder/pexels-rishi-raut-288921897-13155537.jpg');"><span>IT Galerie 4</span></div>
+          <div class="gallery-item" style="background-image:url('Bilder/pexels-eyupcancaglar-17248408.jpg');"><span>IT Galerie 5</span></div>
+          <div class="gallery-item" style="background-image:url('Bilder/jakub-zerdzicki-gCyjEr-g2oI-unsplash.jpg');"><span>IT Galerie 6</span></div>
+          <div class="gallery-item" style="background-image:url('Bilder/daniil-komov--i1TiWcvw30-unsplash.jpg');"><span>IT Galerie 7</span></div>
+          <div class="gallery-item" style="background-image:url('Bilder/D23704B1-648A-4EA1-A9C4-C95685FEA7A3_1_105_c.jpeg');"><span>IT Galerie 8</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="leistungen">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Leistungen</span>
+          <h2>Was ich für Sie umsetze</h2>
+          <p>Von operativem Support bis zu strategischer Prozessbegleitung: Ich biete IT-Beratung, die in den Alltag passt.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card"><h3>IT-Support & Anwenderbetreuung</h3></div>
+          <div class="card"><h3>IT-Betrieb & Monitoring</h3></div>
+          <div class="card"><h3>Serververwaltung</h3></div>
+          <div class="card"><h3>Prozessdigitalisierung</h3></div>
+          <div class="card"><h3>Backup & IT-Sicherheit</h3></div>
+          <div class="card"><h3>IT-Projektbegleitung & Coaching</h3></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt" style="background: #06070f;">
+      <div class="container contact-grid">
+        <div class="contact-box">
+          <span class="eyebrow">Kontakt</span>
+          <h2>Lassen Sie uns Ihr IT-Projekt besprechen</h2>
+          <p>Ich freue mich auf den Austausch zu IT-Support, Systemmanagement, Digitalisierung und Prozessoptimierung.</p>
+          <dl class="contact-list">
+            <div class="contact-item"><dt>Telefon</dt><dd>0156 79785878</dd></div>
+            <div class="contact-item"><dt>E-Mail</dt><dd>davidjacob6@icloud.com</dd></div>
+            <div class="contact-item"><dt>Standort</dt><dd>Igensdorf / Metropolregion Nürnberg</dd></div>
+            <div class="contact-item"><dt>Sprechzeiten</dt><dd>Mo–Fr: 09:00–16:00</dd></div>
+          </dl>
+        </div>
+        <div class="contact-box secondary-card">
+          <h3>Direkter Draht</h3>
+          <p>Senden Sie mir eine Nachricht per E-Mail oder rufen Sie einfach an. Ich melde mich schnellstmöglich mit einem konkreten Vorschlag zurück.</p>
+          <div class="hero-actions" style="margin-top:1.5rem; gap:0.75rem;">
+            <a href="mailto:davidjacob6@icloud.com" class="button">E-Mail schreiben</a>
+            <a href="tel:+4915679785878" class="button-alt">Anrufen</a>
+          </div>
+          <div class="secondary-card" style="margin-top:1.5rem; padding:1.5rem;">
+            <p style="font-size:0.85rem; letter-spacing:0.12em; text-transform:uppercase; color:#94a3b8;">Beratungsraum</p>
+            <p style="margin-top:0.75rem; font-weight:700;">Igensdorf / Metropolregion Nürnberg</p>
+            <p style="margin-top:0.5rem; color:#cbd5e1; line-height:1.75;">Virtuelle Beratung oder Vor-Ort-Termin nach Absprache.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rechtliches" style="background: #08090f;">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Rechtliches</span>
+          <h2>Datenschutz & Cookie-Hinweise</h2>
+          <p>Der Schutz Ihrer persönlichen Daten ist uns wichtig. Hier finden Sie unsere Hinweise zur Verarbeitung und Nutzung.</p>
+        </div>
+        <div class="card contact-box">
+          <h3>1. Allgemeine Hinweise</h3>
+          <p>Der Schutz Ihrer persönlichen Daten ist uns wichtig. Wir verarbeiten Ihre Daten ausschließlich auf Grundlage der gesetzlichen Bestimmungen (DSGVO, TMG).</p>
+          <h3>2. Zugriffsdaten</h3>
+          <p>Beim Besuch dieser Website speichert der Server automatisch Ihre IP-Adresse, Browserdaten und Uhrzeit des Zugriffs. Diese Daten sind technisch notwendig und werden nicht dauerhaft gespeichert oder ausgewertet.</p>
+          <h3>3. Kontaktaufnahme</h3>
+          <p>Wenn Sie uns per E-Mail kontaktieren, speichern wir Ihre Angaben zur Bearbeitung Ihrer Anfrage. Diese Daten geben wir nicht weiter.</p>
+          <h3>4. Cookies</h3>
+          <p>Diese Website verwendet keine Cookies zur Verfolgung oder Analyse. Technisch notwendige Cookies werden nicht eingesetzt.</p>
+          <h3>5. Ihre Rechte</h3>
+          <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Widerspruch gegen die Verarbeitung. Beschwerden können Sie an die zuständige Datenschutzaufsicht richten.</p>
+          <p><strong>Verantwortlich:</strong><br>Commercial Spezialist for IT Systemmanagement<br>Inhaber: David Jacob<br>E-Mail: davidjacob6@icloud.com</p>
+          <p><em>Stand: April 2026</em></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;">
+      <p>© 2026 David Jacob · IT Consulting</p>
+      <div class="footer-links">
+        <a href="#start">Start</a>
+        <a href="#ueberuns">Über uns</a>
+        <a href="#galerie">Galerie</a>
+        <a href="#leistungen">Leistungen</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookieToggle" class="cookie-toggle" role="button" aria-label="Cookie Hinweise öffnen">Cookie-Hinweis</div>
+  <div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie Hinweise">
+    <div class="cookie-banner-header">
+      <p>Diese Website verwendet keine Cookies zur Verfolgung oder Analyse. Technisch notwendige Cookies werden nicht eingesetzt. Durch Klick auf „Akzeptieren“ bestätigen Sie den Hinweis.</p>
+      <button id="closeCookieBanner" class="cookie-close" aria-label="Cookie-Banner schließen">×</button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+      <button id="acceptCookies" type="button">Akzeptieren</button>
+      <a href="#rechtliches">Mehr erfahren</a>
+    </div>
+  </div>
+
+  <script>
+    const cookieBanner = document.getElementById('cookieBanner');
+    const cookieToggle = document.getElementById('cookieToggle');
+    const acceptButton = document.getElementById('acceptCookies');
+    const closeButton = document.getElementById('closeCookieBanner');
+    const consentKey = 'cookieConsentAccepted';
+
+    function showCookieBanner() {
+      if (cookieBanner) {
+        cookieBanner.classList.add('open');
+      }
+      if (cookieToggle) {
+        cookieToggle.style.display = 'none';
+      }
+    }
+
+    function hideCookieBanner() {
+      if (cookieBanner) {
+        cookieBanner.classList.remove('open');
+      }
+      if (cookieToggle) {
+        cookieToggle.style.display = 'inline-flex';
+      }
+    }
+
+    function acceptCookies() {
+      localStorage.setItem(consentKey, 'true');
+      if (cookieBanner) {
+        cookieBanner.classList.remove('open');
+      }
+      if (cookieToggle) {
+        cookieToggle.style.display = 'none';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem(consentKey) === 'true') {
+        if (cookieToggle) {
+          cookieToggle.style.display = 'none';
+        }
+      } else {
+        if (cookieToggle) {
+          cookieToggle.style.display = 'inline-flex';
+          cookieToggle.addEventListener('click', showCookieBanner);
+        }
+      }
+
+      if (acceptButton) {
+        acceptButton.addEventListener('click', acceptCookies);
+      }
+      if (closeButton) {
+        closeButton.addEventListener('click', hideCookieBanner);
+      }
+    });
+  </script>
+</body>
+</html>
